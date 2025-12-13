@@ -1,26 +1,40 @@
 import { useState, useEffect } from 'react';
 import {
-  _Container,
-  _AppBar,
-  _Toolbar,
-  _Typography,
-  _Button,
-  _Box,
-  _Snackbar,
-  _Alert,
-  _ThemeProvider,
-  _createTheme,
-  _CssBaseline,
-  _Paper,
+  Container,
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Snackbar,
+  Alert,
+  CssBaseline,
+  Paper,
 } from '@mui/material';
-import { _Plus, _Sun } from 'lucide-react';
-import { _mockApi } from './utils/mockApi';
-import { _LoadingIndicator } from './components/LoadingIndicator';
-import { _ErrorAlert } from './components/ErrorAlert';
-import { _SolarArrayTable } from './components/SolarArrayTable';
-import { _AssetForm } from './components/AssetForm';
-import { _DeleteConfirmation } from './components/DeleteConfirmation';
-import { _Dashboard } from './components/Dashboard';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Plus, Sun } from 'lucide-react';
+
+import { mockApi } from './utils/mockApi';
+import LoadingIndicator from './components/LoadingIndicator';
+import ErrorAlert from './components/ErrorAlert';
+import SolarArrayTable from './components/SolarArrayTable';
+import AssetForm from './components/AssetForm';
+import DeleteConfirmation from './components/DeleteConfirmation';
+import Dashboard from './components/Dashboard';
+
+// --- DEBUG: log imported symbols to identify undefined ones (remove after) ---
+console.log('DEBUG IMPORTS', {
+  // MUI
+  Container, AppBar, Toolbar, Typography, Button, Box, Snackbar, Alert, CssBaseline, Paper,
+  ThemeProvider, createTheme,
+  // icons
+  Plus, Sun,
+  // api + components
+  mockApi,
+  LoadingIndicator, ErrorAlert, SolarArrayTable, AssetForm, DeleteConfirmation, Dashboard,
+});
+
+
 
 const theme = createTheme({
   palette: {
@@ -37,19 +51,22 @@ export default function App() {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [formOpen, setFormOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+
   const [editingAsset, setEditingAsset] = useState(undefined);
   const [deletingAsset, setDeletingAsset] = useState(undefined);
+
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
     severity: 'success',
   });
 
-  // Initial data load
   useEffect(() => {
     loadAssets();
   }, []);
@@ -61,7 +78,7 @@ export default function App() {
       const data = await mockApi.getAssets();
       setAssets(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load assets');
+      setError('Failed to load assets');
     } finally {
       setLoading(false);
     }
@@ -73,10 +90,9 @@ export default function App() {
       const newAsset = await mockApi.createAsset(asset);
       setAssets((prev) => [...prev, newAsset]);
       setFormOpen(false);
-      setEditingAsset(undefined);
       showSnackbar('Asset created successfully', 'success');
-    } catch (err) {
-      showSnackbar(err instanceof Error ? err.message : 'Failed to create asset', 'error');
+    } catch {
+      showSnackbar('Failed to create asset', 'error');
     } finally {
       setFormLoading(false);
     }
@@ -85,13 +101,15 @@ export default function App() {
   const handleUpdateAsset = async (asset) => {
     try {
       setFormLoading(true);
-      const updatedAsset = await mockApi.updateAsset(asset.id, asset);
-      setAssets((prev) => prev.map((a) => (a.id === asset.id ? updatedAsset : a)));
+      const updated = await mockApi.updateAsset(asset.id, asset);
+      setAssets((prev) =>
+        prev.map((a) => (a.id === asset.id ? updated : a))
+      );
       setFormOpen(false);
       setEditingAsset(undefined);
       showSnackbar('Asset updated successfully', 'success');
-    } catch (err) {
-      showSnackbar(err instanceof Error ? err.message : 'Failed to update asset', 'error');
+    } catch {
+      showSnackbar('Failed to update asset', 'error');
     } finally {
       setFormLoading(false);
     }
@@ -103,74 +121,40 @@ export default function App() {
     try {
       setDeleteLoading(true);
       await mockApi.deleteAsset(deletingAsset.id);
-      setAssets((prev) => prev.filter((a) => a.id !== deletingAsset.id));
+      setAssets((prev) =>
+        prev.filter((a) => a.id !== deletingAsset.id)
+      );
       setDeleteDialogOpen(false);
       setDeletingAsset(undefined);
       showSnackbar('Asset deleted successfully', 'success');
-    } catch (err) {
-      showSnackbar(err instanceof Error ? err.message : 'Failed to delete asset', 'error');
+    } catch {
+      showSnackbar('Failed to delete asset', 'error');
     } finally {
       setDeleteLoading(false);
     }
-  };
-
-  const handleEditClick = (asset) => {
-    setEditingAsset(asset);
-    setFormOpen(true);
-  };
-
-  const handleDeleteClick = (asset) => {
-    setDeletingAsset(asset);
-    setDeleteDialogOpen(true);
-  };
-
-  const handleAddNew = () => {
-    setEditingAsset(undefined);
-    setFormOpen(true);
-  };
-
-  const handleFormSubmit = (asset) => {
-    if (editingAsset) {
-      handleUpdateAsset(asset);
-    } else {
-      handleCreateAsset(asset);
-    }
-  };
-
-  const handleFormCancel = () => {
-    setFormOpen(false);
-    setEditingAsset(undefined);
-  };
-
-  const handleDeleteCancel = () => {
-    setDeleteDialogOpen(false);
-    setDeletingAsset(undefined);
   };
 
   const showSnackbar = (message, severity) => {
     setSnackbar({ open: true, message, severity });
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }));
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+
       <Box sx={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
         {/* App Bar */}
         <AppBar position="static">
           <Toolbar>
-            <Sun size={32} style={{ marginRight: '16px' }} />
+            <Sun size={28} style={{ marginRight: 12 }} />
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               Solar Array Manager
             </Typography>
             <Button
               variant="contained"
               color="secondary"
-              startIcon={<Plus size={20} />}
-              onClick={handleAddNew}
+              startIcon={<Plus size={18} />}
+              onClick={() => setFormOpen(true)}
               disabled={loading}
             >
               Add Asset
@@ -181,56 +165,77 @@ export default function App() {
         {/* Main Content */}
         <Container maxWidth="xl" sx={{ py: 4 }}>
           {loading && <LoadingIndicator message="Loading solar assets..." />}
-
           {error && <ErrorAlert message={error} onRetry={loadAssets} />}
 
           {!loading && !error && (
             <>
               <Dashboard assets={assets} />
-              <Paper sx={{ p: 3 }}>
+
+              <Paper sx={{ p: 3, mt: 3 }}>
                 <Typography variant="h5" gutterBottom>
                   Solar Installations
                 </Typography>
-                <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-                  Manage your renewable energy assets. Track capacity, status, and maintenance
-                  schedules.
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 3 }}
+                >
+                  Manage your renewable energy assets. Track capacity, status,
+                  and maintenance schedules.
                 </Typography>
+
                 <SolarArrayTable
                   assets={assets}
-                  onEdit={handleEditClick}
-                  onDelete={handleDeleteClick}
+                  onEdit={(asset) => {
+                    setEditingAsset(asset);
+                    setFormOpen(true);
+                  }}
+                  onDelete={(asset) => {
+                    setDeletingAsset(asset);
+                    setDeleteDialogOpen(true);
+                  }}
                 />
               </Paper>
             </>
           )}
         </Container>
 
-        {/* Asset Form Dialog */}
+        {/* Asset Form */}
         <AssetForm
           open={formOpen}
           asset={editingAsset}
           loading={formLoading}
-          onSubmit={handleFormSubmit}
-          onCancel={handleFormCancel}
+          onSubmit={(asset) =>
+            editingAsset
+              ? handleUpdateAsset(asset)
+              : handleCreateAsset(asset)
+          }
+          onCancel={() => {
+            setFormOpen(false);
+            setEditingAsset(undefined);
+          }}
         />
 
-        {/* Delete Confirmation Dialog */}
+        {/* Delete Confirmation */}
         <DeleteConfirmation
           open={deleteDialogOpen}
           assetName={deletingAsset?.name || ''}
           loading={deleteLoading}
           onConfirm={handleDeleteAsset}
-          onCancel={handleDeleteCancel}
+          onCancel={() => {
+            setDeleteDialogOpen(false);
+            setDeletingAsset(undefined);
+          }}
         />
 
-        {/* Snackbar for notifications */}
+        {/* Snackbar */}
         <Snackbar
           open={snackbar.open}
           autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
+          onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
-          <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          <Alert severity={snackbar.severity} sx={{ width: '100%' }}>
             {snackbar.message}
           </Alert>
         </Snackbar>

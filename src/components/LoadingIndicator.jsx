@@ -1,7 +1,7 @@
 //import React from 'react';
-import { _CircularProgress, _Box, _Typography } from '@mui/material';
+import { Box,CircularProgress, Box, Typography } from '@mui/material';
 
-export function LoadingIndicator({ message = 'Loading...' }) {
+export default function LoadingIndicator({ message = 'Loading...' }) {
   return (
     <Box
       display="flex"

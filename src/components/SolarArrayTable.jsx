@@ -1,25 +1,25 @@
 import { useState } from 'react';
 import {
-  _Table,
-  _TableBody,
-  _TableCell,
-  _TableContainer,
-  _TableHead,
-  _TableRow,
-  _TablePagination,
-  _TableSortLabel,
-  _Paper,
-  _Chip,
-  _IconButton,
-  _Tooltip,
-  _Box,
-  _TextField,
-  _MenuItem,
-  _InputAdornment,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  TableSortLabel,
+  Paper,
+  Chip,
+  IconButton,
+  Tooltip,
+  Box,
+  TextField,
+  MenuItem,
+  InputAdornment,
 } from '@mui/material';
-import { _Edit2, _Trash2, _Search } from 'lucide-react';
+import { Edit2, Trash2, Search } from 'lucide-react';
 
-export function SolarArrayTable({ assets, onEdit, onDelete }) {
+export default function SolarArrayTable({ assets, onEdit, onDelete }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [sortField, setSortField] = useState('id');

@@ -1,16 +1,16 @@
 //import React from 'react';
 import {
-  _Dialog,
-  _DialogTitle,
-  _DialogContent,
-  _DialogContentText,
-  _DialogActions,
-  _Button,
-  _CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+Button,
+  CircularProgress,
 } from '@mui/material';
-import { _AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
-export function DeleteConfirmation({ open, assetName, loading, onConfirm, onCancel }) {
+export default function DeleteConfirmation({ open, assetName, loading, onConfirm, onCancel }) {
   return (
     <Dialog open={open} onClose={loading ? undefined : onCancel}>
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

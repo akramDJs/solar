@@ -1,7 +1,6 @@
-//import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { _Dashboard } from './Dashboard';
+import Dashboard from './Dashboard';
 
 describe('Dashboard component', () => {
   const assets = [
@@ -22,9 +21,9 @@ describe('Dashboard component', () => {
   it('renders correct values for statistics', () => {
     render(<Dashboard assets={assets} />);
 
-    expect(screen.getByText('3')).toBeInTheDocument(); // Total Installations
-    expect(screen.getByText('2')).toBeInTheDocument(); // Active Assets
-    expect(screen.getByText('1.0 MW')).toBeInTheDocument(); // Total Capacity (1000/1000 MW)
-    expect(screen.getByText('1')).toBeInTheDocument(); // Maintenance Required
+    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(screen.getByText('1.0 MW')).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
   });
 });

@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import {
-  _Dialog,
-  _DialogTitle,
-  _DialogContent,
-  _DialogActions,
-  _Button,
-  _TextField,
-  _MenuItem,
-  _Grid,
-  _CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  MenuItem,
+  Grid,
+  CircularProgress,
 } from '@mui/material';
 
-export function AssetForm({ open, asset, loading, onSubmit, onCancel }) {
+export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
     name: '',
     capacity: '',

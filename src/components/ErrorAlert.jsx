@@ -1,8 +1,8 @@
 //import React from 'react';
-import { _Alert, _AlertTitle, _Button, _Box } from '@mui/material';
-import { _RefreshCw } from 'lucide-react';
+import { Alert, AlertTitle, Button, Box } from '@mui/material';
+import { RefreshCw } from 'lucide-react';
 
-export function ErrorAlert({ message, onRetry }) {
+export default function ErrorAlert({ message, onRetry }) {
   return (
     <Box sx={{ maxWidth: 600, margin: '40px auto' }}>
       <Alert severity="error">

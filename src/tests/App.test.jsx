@@ -1,9 +1,7 @@
-//import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import _App from '../App';
+import App from '../App';
 
-// Mock the API
 vi.mock('../utils/mockApi', () => ({
   mockApi: {
     getAssets: vi.fn(() =>
@@ -19,7 +17,6 @@ describe('App component', () => {
   it('renders app without crashing', async () => {
     render(<App />);
 
-    // Wait for Dashboard stats to appear
     await waitFor(() => {
       expect(screen.getByText('Total Installations')).toBeInTheDocument();
       expect(screen.getByText('Active Assets')).toBeInTheDocument();
