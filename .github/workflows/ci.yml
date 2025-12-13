@@ -41,7 +41,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.ghcr_token }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       # Scan the local Docker image using Docker Scan (Snyk)
       - name: Scan Docker image
