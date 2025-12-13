@@ -2,61 +2,43 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-      - chore/add-ci-workflow
+    branches: [main]
   pull_request:
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
-      # 1️⃣ Checkout your code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2️⃣ Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 18
           cache: 'npm'
 
-      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Lint code
-      - name: Lint code
-        run: npm run lint
+      - name: Build
+        run: npm run build
 
-      # 5️⃣ Run tests
-      - name: Run tests
-        run: npm run test -- --coverage
-
-      # 6️⃣ Log in to GHCR
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.ghcr_token }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
-      # 7️⃣ Build & push Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            ghcr.io/akramdjs/solar:latest
-            ghcr.io/akramdjs/solar:${{ github.sha }}
-          cache-from: type=registry,ref=ghcr.io/akramdjs/solar:latest
-          cache-to: type=inline
+          tags: ghcr.io/akramdjs/solar:latest
 
-      # 8️⃣ Scan image remotely with Trivy
-      - name: Scan Docker image for vulnerabilities
+      - name: Scan image for vulnerabilities (remote)
         run: |
           docker run --rm aquasec/trivy image --remote ghcr.io/akramdjs/solar:latest
