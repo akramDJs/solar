@@ -35,7 +35,7 @@ jobs:
 
       # 6️⃣ Audit dependencies
       - name: Audit npm dependencies
-        run: npm audit
+        run: npm audit --fix force
 
       # 7️⃣ Build Docker image locally
       - name: Build Docker image
