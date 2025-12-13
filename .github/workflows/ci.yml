@@ -50,6 +50,5 @@ jobs:
           image --severity HIGH,CRITICAL --exit-code 1 \
           ghcr.io/akramdjs/solar:latest
 
-          # Push image only if scan passes
       - name: Push Docker image
         run: docker push ghcr.io/akramdjs/solar:latest
