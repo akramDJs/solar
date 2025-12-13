@@ -6,6 +6,10 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   build-and-scan:
     runs-on: ubuntu-latest
@@ -30,24 +34,28 @@ jobs:
 
       - name: Audit dependencies
         run: npm audit fix --force
-      # Build Docker image locally
-      - name: Build Docker image
-        run: docker build --no-cache -t ghcr.io/akramdjs/solar:latest .
-      # Docker login to GitHub Container Registry
+
+      # 🔧 FIX 1: Login BEFORE build (use GitHub token)
       - name: Log in to GHCR
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.ghcr_token }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Scan the local Docker image
+      # 🔧 FIX 2: Build Docker image locally
+      - name: Build Docker image
+        run: docker build --no-cache -t ghcr.io/akramdjs/solar:latest .
+
+      # 🔧 FIX 3: Allow Trivy to access Docker daemon
       - name: Scan Docker image with Trivy
         run: |
-          docker run --rm aquasec/trivy:latest image \
-          ghcr.io/akramdjs/solar:latest \
-          --severity CRITICAL \
-          --exit-code 1
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest image \
+            ghcr.io/akramdjs/solar:latest \
+            --severity CRITICAL \
+            --exit-code 1
 
       - name: Push Docker image
         run: docker push ghcr.io/akramdjs/solar:latest
