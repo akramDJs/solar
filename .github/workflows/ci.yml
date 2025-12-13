@@ -2,35 +2,44 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
 
 jobs:
-  build-and-push:
+  build-and-scan:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '17'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Lint code
+        run: npm run lint
 
-      - name: Log in to GitHub Container Registry
+      - name: Run tests with coverage
+        run: npm run test -- --coverage
+
+      - name: Audit dependencies
+        run: npm audit
+
+      # Docker login to GitHub Container Registry
+      - name: Log in to GHCR
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+      # Build and push Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -39,6 +48,7 @@ jobs:
           push: true
           tags: ghcr.io/akramdjs/solar:latest
 
-      - name: Scan image for vulnerabilities (remote)
+      # Scan the pushed image with Trivy
+      - name: Scan Docker image with Trivy
         run: |
-          docker run --rm aquasec/trivy image --remote ghcr.io/akramdjs/solar:latest
+          docker run --rm aquasec/trivy image ghcr.io/akramdjs/solar:latest
