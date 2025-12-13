@@ -36,7 +36,7 @@ jobs:
   docker-build-and-push:
     needs: build-test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' # Only push Docker on main branch
     steps:
       - uses: actions/checkout@v4
 
@@ -57,10 +57,10 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: true
-          tags: ghcr.io/akramdjs/solaire:latest # lowercase username
-
-      - name: Optional Scan image for vulnerabilities
-        run: |
-          docker pull ghcr.io/akramdjs/solaire:latest
-          docker run --rm aquasec/trivy image ghcr.io/akramdjs/solaire:latest
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/solaire:latest
+            ghcr.io/${{ github.repository_owner }}/solaire:${{ github.sha }}
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/solaire:latest
+          cache-to: type=inline
