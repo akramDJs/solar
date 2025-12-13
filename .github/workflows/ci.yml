@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '17'
+          node-version: '18'
           cache: 'npm'
 
       - name: Install dependencies
@@ -51,4 +51,4 @@ jobs:
       # Scan the pushed image with Trivy
       - name: Scan Docker image with Trivy
         run: |
-          docker run --rm aquasec/trivy image ghcr.io/akramdjs/solar:latest
+          docker run --rm aquasec/trivy:latest image ghcr.io/akramdjs/solar:latest --severity HIGH,CRITICAL --exit-code 1
