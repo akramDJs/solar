@@ -50,7 +50,10 @@ jobs:
       # 🔧 FIX 3: Allow Trivy to access Docker daemon
       - name: Scan Docker image with Trivy
         run: |
-          docker run --rm aquasec/trivy:latest image \
+          docker run --rm aquasec/
+          -e TRIVY_USERNAME=${{ github.akramdjs }} \
+          -e TRIVY_PASSWORD=${{ secrets.GITHUB_TOKEN }} \
+          trivy:latest image \
            ghcr.io/akramdjs/solar:latest \
           --severity CRITICAL \
           --ignore-unfixed
