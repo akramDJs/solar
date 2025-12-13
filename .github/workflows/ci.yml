@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
@@ -7,48 +7,63 @@ on:
   pull_request:
 
 jobs:
-  build-and-scan:
+  build-test-scan-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      # 1️⃣ Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      # 2️⃣ Setup Node.js (version 22)
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
+      # 4️⃣ Lint code
       - name: Lint code
         run: npm run lint
 
-      - name: Run tests with coverage
+      # 5️⃣ Run tests with coverage
+      - name: Run tests
         run: npm run test -- --coverage
 
-      - name: Audit dependencies
-        run: npm audit fix --force
+      # 6️⃣ Audit dependencies
+      - name: Audit npm dependencies
+        run: npm audit
 
-      # Docker login to GitHub Container Registry
-      - name: Log in to GHCR
+      # 7️⃣ Build Docker image locally
+      - name: Build Docker image
+        run: |
+          docker build \
+            --tag ghcr.io/akramdjs/solar:latest \
+            .
+
+      # 8️⃣ Scan Docker image with Trivy
+      - name: Scan Docker image with Trivy
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest \
+            image \
+            --severity HIGH,CRITICAL \
+            --exit-code 1 \
+            ghcr.io/akramdjs/solar:latest
+
+      # 9️⃣ Log in to GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      # Build and push Docker image
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/akramdjs/solar:latest
-
-      # Scan the pushed image with Trivy
-      - name: Scan Docker image with Trivy
+      # 🔟 Push Docker image to GHCR (only if scan passes)
+      - name: Push Docker image
         run: |
-          docker run --rm aquasec/trivy:latest image ghcr.io/akramdjs/solar:latest --severity HIGH,CRITICAL --exit-code 1
+          docker push ghcr.io/akramdjs/solar:latest
