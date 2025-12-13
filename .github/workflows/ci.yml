@@ -45,8 +45,9 @@ jobs:
 
       # Scan the local Docker image using Docker Scan (Snyk)
       - name: Scan Docker image
-        run: docker scan ghcr.io/akramdjs/solar:latest --accept-license
-
+        env:
+        DOCKER_SCAN_SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # optional, for Snyk auth
+        run: docker scan ghcr.io/akramdjs/solar:latest
       # Push Docker image
       - name: Push Docker image
         run: docker push ghcr.io/akramdjs/solar:latest
