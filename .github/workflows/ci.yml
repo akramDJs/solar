@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [main, develop]
 
-# Allow pushing packages with GITHUB_TOKEN if the repo settings permit.
-permissions:
-  contents: read
-  packages: write
-
 jobs:
   build-test:
     runs-on: ubuntu-latest
@@ -45,11 +40,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # compute lowercase owner into env var (safe & portable)
-      - name: Set lower-case owner env
-        run: |
-          echo "OWNER_LOWER=$(echo \"$GITHUB_REPOSITORY_OWNER\" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -61,21 +51,19 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          # If you want to use GITHUB_TOKEN, replace password: ${{ secrets.GITHUB_TOKEN }}
-          # but some org/repo settings require a PAT with packages:write scope instead.
           password: ${{ secrets.ghcr_token }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: true
-          # use the lowercase owner computed above
           tags: |
-            ghcr.io/${{ env.OWNER_LOWER }}/solaire:${{ github.sha }}
-            ghcr.io/${{ env.OWNER_LOWER }}/solaire:latest
+            ghcr.io/akramdjs/solar:latest
+            ghcr.io/akramdjs/solar:${{ github.sha }}
 
       - name: Optional Scan image for vulnerabilities
         run: |
-          docker pull "ghcr.io/${{ env.OWNER_LOWER }}/solaire:${{ github.sha }}"
-          docker run --rm aquasec/trivy image "ghcr.io/${{ env.OWNER_LOWER }}/solaire:${{ github.sha }}"
+          docker pull "ghcr.io/akramdjs/solar:latest"
+          docker run --rm aquasec/trivy image "ghcr.io/akramdjs/solar:latest"
