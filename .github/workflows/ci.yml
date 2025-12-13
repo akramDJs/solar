@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   build-test:
@@ -60,7 +60,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/solaire:${{ github.sha }}
 
-      - name: Optional: Scan image for vulnerabilities
+      - name: Optional Scan image for vulnerabilities
         run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/solaire:${{ github.sha }}
-          docker run --rm aquasec/trivy image ghcr.io/${{ github.repository_owner }}/solaire:${{ github.sha }}
+          docker pull "ghcr.io/${{ github.repository_owner }}/solaire:${{ github.sha }}"
+          docker run --rm aquasec/trivy image "ghcr.io/${{ github.repository_owner }}/solaire:${{ github.sha }}"
