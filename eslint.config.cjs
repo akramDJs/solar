@@ -1,9 +1,10 @@
-import js from "@eslint/js";
-import reactPlugin from "eslint-plugin-react";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
-import prettierPlugin from "eslint-plugin-prettier";
+// eslint.config.cjs (CommonJS)
+const js = require("@eslint/js");
+const react = require("eslint-plugin-react");
+const reactHooks = require("eslint-plugin-react-hooks");
+const prettier = require("eslint-plugin-prettier");
 
-export default [
+module.exports = [
   {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
@@ -17,9 +18,9 @@ export default [
       globals: {
         window: "readonly",
         document: "readonly",
-        console: "readonly",
         setTimeout: "readonly",
         clearTimeout: "readonly",
+        console: "readonly",
       },
     },
     settings: {
@@ -28,39 +29,23 @@ export default [
       },
     },
     plugins: {
-      react: reactPlugin,
-      "react-hooks": reactHooksPlugin,
-      prettier: prettierPlugin,
+      react,
+      "react-hooks": reactHooks,
+      prettier,
     },
     rules: {
-      // Recommended ESLint rules
       ...js.configs.recommended.rules,
-
-      // React rules
-      ...reactPlugin.configs.recommended.rules,
+      ...react.configs.recommended.rules,
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
       "react/jsx-uses-react": "off",
-
-      // Hooks rules
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-
-      // Prettier
       "prettier/prettier": "warn",
-
-      // Professional unused vars handling
       "no-unused-vars": [
-        "warn", // <-- warn, don’t fail CI
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-          ignoreRestSiblings: true,
-        },
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
-
-      // Optional: catch console logs in production
-      "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     },
   },
 ];
