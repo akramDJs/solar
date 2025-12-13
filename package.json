@@ -51,6 +51,8 @@
             "vaul": "^1.1.2"
       },
       "devDependencies": {
+            "@eslint/eslintrc": "^3.3.3",
+            "@eslint/js": "^9.39.2",
             "@testing-library/jest-dom": "^6.9.1",
             "@testing-library/react": "^16.3.0",
             "@types/node": "^20.10.0",
@@ -72,6 +74,8 @@
             "build": "vite build",
             "test": "react-scripts test",
             "lint": "eslint src",
+            "lint:fix": "eslint src --fix",
+            "lint:ci": "eslint src --max-warnings=0",
             "format": "prettier --write src"
       }
 }
