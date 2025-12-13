@@ -1,4 +1,4 @@
-import React from 'react';
+//import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -6,17 +6,11 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import { AlertTriangle } from 'lucide-react';
 
-export function DeleteConfirmation({
-  open,
-  assetName,
-  loading,
-  onConfirm,
-  onCancel
-}) {
+export function DeleteConfirmation({ open, assetName, loading, onConfirm, onCancel }) {
   return (
     <Dialog open={open} onClose={loading ? undefined : onCancel}>
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -25,8 +19,8 @@ export function DeleteConfirmation({
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to delete <strong>{assetName}</strong>?
-          This action cannot be undone.
+          Are you sure you want to delete <strong>{assetName}</strong>? This action cannot be
+          undone.
         </DialogContentText>
       </DialogContent>
       <DialogActions>

@@ -7,6 +7,7 @@ A comprehensive React-based web application for managing renewable energy assets
 ## Features
 
 ### Core Functionality
+
 - ✅ **CRUD Operations**: Create, Read, Update, and Delete solar assets
 - ✅ **Real-time Dashboard**: View key metrics and statistics at a glance
 - ✅ **Advanced Filtering**: Search by ID, name, location, and filter by status
@@ -15,6 +16,7 @@ A comprehensive React-based web application for managing renewable energy assets
 - ✅ **Responsive Design**: Mobile-friendly interface using Material-UI
 
 ### Data Management
+
 - 📊 Manages ~800 solar installation records
 - ⏱️ Simulates API latency (2 second delay) for realistic testing
 - 🔄 Loading states and error handling
@@ -22,6 +24,7 @@ A comprehensive React-based web application for managing renewable energy assets
 - 📝 Form validation with helpful error messages
 
 ### User Experience
+
 - 🎨 Modern Material-UI design with custom solar-themed colors
 - 📱 Fully responsive layout for desktop, tablet, and mobile
 - 🔔 Toast notifications for user actions
@@ -46,17 +49,20 @@ A comprehensive React-based web application for managing renewable energy assets
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd solar-array-manager
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**
+
    ```bash
    npm start
    ```
@@ -70,11 +76,13 @@ npm test
 ```
 
 Run tests in watch mode:
+
 ```bash
 npm test -- --watch
 ```
 
 Generate coverage report:
+
 ```bash
 npm test -- --coverage
 ```
@@ -114,11 +122,13 @@ solar-array-manager/
 ## Usage Guide
 
 ### Viewing Assets
+
 - Browse the table of solar installations
 - View dashboard statistics including total capacity, active assets, and maintenance needs
 - Use pagination controls to navigate through pages
 
 ### Adding a New Asset
+
 1. Click the **"Add Asset"** button in the top-right
 2. Fill in the form:
    - Asset Name
@@ -131,21 +141,25 @@ solar-array-manager/
 3. Click **"Create"** to save
 
 ### Editing an Asset
+
 1. Click the **edit icon** (pencil) next to any asset
 2. Modify the fields you want to change
 3. Click **"Update"** to save changes
 
 ### Deleting an Asset
+
 1. Click the **delete icon** (trash) next to any asset
 2. Confirm the deletion in the dialog
 3. The asset will be removed from the list
 
 ### Filtering and Searching
+
 - **Search**: Type in the search box to filter by ID, name, or location
 - **Status Filter**: Use the dropdown to filter by Active, Inactive, or Maintenance status
 - **Sorting**: Click any column header to sort by that field (click again to reverse order)
 
 ### Pagination
+
 - Use the pagination controls at the bottom of the table
 - Choose rows per page: 10, 25, 50, or 100
 - Navigate between pages using arrow buttons
@@ -164,7 +178,9 @@ To test error handling, uncomment the `simulateFailure()` calls in `mockApi.ts`.
 ## Key Components
 
 ### SolarArrayTable
+
 Main table component featuring:
+
 - Column sorting
 - Search functionality
 - Status filtering
@@ -172,14 +188,18 @@ Main table component featuring:
 - Edit/Delete actions
 
 ### AssetForm
+
 Modal form for creating and editing assets with:
+
 - Full validation
 - Date pickers
 - Status dropdown
 - Real-time error messages
 
 ### Dashboard
+
 Statistics panel showing:
+
 - Total installations
 - Active assets count
 - Total capacity in MW
@@ -188,6 +208,7 @@ Statistics panel showing:
 ## Testing
 
 The application includes automated tests covering:
+
 - Initial loading state
 - Successful data loading
 - Error handling

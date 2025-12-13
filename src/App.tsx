@@ -11,7 +11,7 @@ import {
   ThemeProvider,
   createTheme,
   CssBaseline,
-  Paper
+  Paper,
 } from '@mui/material';
 import { Plus, Sun } from 'lucide-react';
 import { mockApi } from './utils/mockApi';
@@ -46,7 +46,7 @@ export default function App() {
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
-    severity: 'success'
+    severity: 'success',
   });
 
   // Initial data load
@@ -71,15 +71,12 @@ export default function App() {
     try {
       setFormLoading(true);
       const newAsset = await mockApi.createAsset(asset);
-      setAssets(prev => [...prev, newAsset]);
+      setAssets((prev) => [...prev, newAsset]);
       setFormOpen(false);
       setEditingAsset(undefined);
       showSnackbar('Asset created successfully', 'success');
     } catch (err) {
-      showSnackbar(
-        err instanceof Error ? err.message : 'Failed to create asset',
-        'error'
-      );
+      showSnackbar(err instanceof Error ? err.message : 'Failed to create asset', 'error');
     } finally {
       setFormLoading(false);
     }
@@ -89,17 +86,12 @@ export default function App() {
     try {
       setFormLoading(true);
       const updatedAsset = await mockApi.updateAsset(asset.id, asset);
-      setAssets(prev =>
-        prev.map(a => a.id === asset.id ? updatedAsset : a)
-      );
+      setAssets((prev) => prev.map((a) => (a.id === asset.id ? updatedAsset : a)));
       setFormOpen(false);
       setEditingAsset(undefined);
       showSnackbar('Asset updated successfully', 'success');
     } catch (err) {
-      showSnackbar(
-        err instanceof Error ? err.message : 'Failed to update asset',
-        'error'
-      );
+      showSnackbar(err instanceof Error ? err.message : 'Failed to update asset', 'error');
     } finally {
       setFormLoading(false);
     }
@@ -111,15 +103,12 @@ export default function App() {
     try {
       setDeleteLoading(true);
       await mockApi.deleteAsset(deletingAsset.id);
-      setAssets(prev => prev.filter(a => a.id !== deletingAsset.id));
+      setAssets((prev) => prev.filter((a) => a.id !== deletingAsset.id));
       setDeleteDialogOpen(false);
       setDeletingAsset(undefined);
       showSnackbar('Asset deleted successfully', 'success');
     } catch (err) {
-      showSnackbar(
-        err instanceof Error ? err.message : 'Failed to delete asset',
-        'error'
-      );
+      showSnackbar(err instanceof Error ? err.message : 'Failed to delete asset', 'error');
     } finally {
       setDeleteLoading(false);
     }
@@ -163,7 +152,7 @@ export default function App() {
   };
 
   const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
+    setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
   return (
@@ -193,9 +182,7 @@ export default function App() {
         <Container maxWidth="xl" sx={{ py: 4 }}>
           {loading && <LoadingIndicator message="Loading solar assets..." />}
 
-          {error && (
-            <ErrorAlert message={error} onRetry={loadAssets} />
-          )}
+          {error && <ErrorAlert message={error} onRetry={loadAssets} />}
 
           {!loading && !error && (
             <>
@@ -205,7 +192,8 @@ export default function App() {
                   Solar Installations
                 </Typography>
                 <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-                  Manage your renewable energy assets. Track capacity, status, and maintenance schedules.
+                  Manage your renewable energy assets. Track capacity, status, and maintenance
+                  schedules.
                 </Typography>
                 <SolarArrayTable
                   assets={assets}
@@ -242,11 +230,7 @@ export default function App() {
           onClose={handleCloseSnackbar}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity={snackbar.severity}
-            sx={{ width: '100%' }}
-          >
+          <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
             {snackbar.message}
           </Alert>
         </Snackbar>

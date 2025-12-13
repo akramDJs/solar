@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions, 
+  DialogActions,
   Button,
   TextField,
   MenuItem,
   Grid,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 
 export function AssetForm({ open, asset, loading, onSubmit, onCancel }) {
@@ -19,7 +19,7 @@ export function AssetForm({ open, asset, loading, onSubmit, onCancel }) {
     status: 'active',
     installDate: '',
     efficiency: '',
-    lastMaintenance: ''
+    lastMaintenance: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -33,7 +33,7 @@ export function AssetForm({ open, asset, loading, onSubmit, onCancel }) {
         status: asset.status,
         installDate: asset.installDate,
         efficiency: String(asset.efficiency),
-        lastMaintenance: asset.lastMaintenance
+        lastMaintenance: asset.lastMaintenance,
       });
     } else {
       setFormData({
@@ -43,7 +43,7 @@ export function AssetForm({ open, asset, loading, onSubmit, onCancel }) {
         status: 'active',
         installDate: new Date().toISOString().split('T')[0],
         efficiency: '',
-        lastMaintenance: new Date().toISOString().split('T')[0]
+        lastMaintenance: new Date().toISOString().split('T')[0],
       });
     }
     setErrors({});
@@ -64,7 +64,11 @@ export function AssetForm({ open, asset, loading, onSubmit, onCancel }) {
       newErrors.location = 'Location is required';
     }
 
-    if (!formData.efficiency || Number(formData.efficiency) < 0 || Number(formData.efficiency) > 100) {
+    if (
+      !formData.efficiency ||
+      Number(formData.efficiency) < 0 ||
+      Number(formData.efficiency) > 100
+    ) {
       newErrors.efficiency = 'Efficiency must be between 0 and 100';
     }
 
@@ -91,25 +95,23 @@ export function AssetForm({ open, asset, loading, onSubmit, onCancel }) {
       status: formData.status,
       installDate: formData.installDate,
       efficiency: Number(formData.efficiency),
-      lastMaintenance: formData.lastMaintenance
+      lastMaintenance: formData.lastMaintenance,
     };
 
     onSubmit(submitData);
   };
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({ ...prev, [field]: '' }));
     }
   };
 
   return (
     <Dialog open={open} onClose={loading ? undefined : onCancel} maxWidth="md" fullWidth>
-      <DialogTitle>
-        {asset ? 'Edit Solar Asset' : 'Add New Solar Asset'}
-      </DialogTitle>
+      <DialogTitle>{asset ? 'Edit Solar Asset' : 'Add New Solar Asset'}</DialogTitle>
       <DialogContent>
         <Grid container spacing={2} sx={{ mt: 1 }}>
           <Grid item xs={12} sm={6}>

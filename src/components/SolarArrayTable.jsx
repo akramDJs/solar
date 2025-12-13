@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -15,7 +15,7 @@ import {
   Box,
   TextField,
   MenuItem,
-  InputAdornment
+  InputAdornment,
 } from '@mui/material';
 import { Edit2, Trash2, Search } from 'lucide-react';
 
@@ -26,11 +26,11 @@ export function SolarArrayTable({ assets, onEdit, onDelete }) {
   const [sortDirection, setSortDirection] = useState('asc');
   const [filters, setFilters] = useState({
     status: 'all',
-    searchQuery: ''
+    searchQuery: '',
   });
 
   // Filtering
-  const filteredAssets = assets.filter(asset => {
+  const filteredAssets = assets.filter((asset) => {
     // Status filter
     if (filters.status && filters.status !== 'all' && asset.status !== filters.status) {
       return false;
@@ -65,10 +65,7 @@ export function SolarArrayTable({ assets, onEdit, onDelete }) {
   });
 
   // Pagination
-  const paginatedAssets = sortedAssets.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  const paginatedAssets = sortedAssets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const handleSort = (field) => {
     const isAsc = sortField === field && sortDirection === 'asc';
@@ -106,7 +103,7 @@ export function SolarArrayTable({ assets, onEdit, onDelete }) {
           placeholder="Search by ID, name, or location..."
           value={filters.searchQuery}
           onChange={(e) => {
-            setFilters(prev => ({ ...prev, searchQuery: e.target.value }));
+            setFilters((prev) => ({ ...prev, searchQuery: e.target.value }));
             setPage(0);
           }}
           sx={{ flexGrow: 1, minWidth: '250px' }}
@@ -115,7 +112,7 @@ export function SolarArrayTable({ assets, onEdit, onDelete }) {
               <InputAdornment position="start">
                 <Search size={20} />
               </InputAdornment>
-            )
+            ),
           }}
         />
         <TextField
@@ -123,7 +120,7 @@ export function SolarArrayTable({ assets, onEdit, onDelete }) {
           label="Filter by Status"
           value={filters.status}
           onChange={(e) => {
-            setFilters(prev => ({ ...prev, status: e.target.value }));
+            setFilters((prev) => ({ ...prev, status: e.target.value }));
             setPage(0);
           }}
           sx={{ minWidth: '180px' }}
@@ -229,20 +226,12 @@ export function SolarArrayTable({ assets, onEdit, onDelete }) {
                 <TableCell align="center">
                   <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
                     <Tooltip title="Edit">
-                      <IconButton
-                        size="small"
-                        onClick={() => onEdit(asset)}
-                        color="primary"
-                      >
+                      <IconButton size="small" onClick={() => onEdit(asset)} color="primary">
                         <Edit2 size={18} />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                      <IconButton
-                        size="small"
-                        onClick={() => onDelete(asset)}
-                        color="error"
-                      >
+                      <IconButton size="small" onClick={() => onDelete(asset)} color="error">
                         <Trash2 size={18} />
                       </IconButton>
                     </Tooltip>

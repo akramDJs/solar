@@ -15,11 +15,17 @@ module.exports = [
           jsx: true,
         },
       },
+      env: {
+  browser: true,
+  es2021: true,
+  jest: true,       // <--- Jest globals
+},
       globals: {
         window: "readonly",
         document: "readonly",
         setTimeout: "readonly",
         clearTimeout: "readonly",
+        
         console: "readonly",
       },
     },
@@ -34,10 +40,12 @@ module.exports = [
       prettier,
     },
     rules: {
+      
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
+      
       "react/jsx-uses-react": "off",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
