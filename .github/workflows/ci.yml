@@ -22,10 +22,10 @@ jobs:
         run: npm ci
 
       - name: Lint code
-        run: npm run lint || echo "⚠️ Lint errors detected, review recommended."
+        run: npm run lint
 
       - name: Run tests with coverage
-        run: npm run test -- --coverage || echo "⚠️ Tests failed, review required."
+        run: npm run test -- --coverage
 
       - name: Audit dependencies (log only)
         run: npm audit --audit-level=moderate || echo "⚠️ Moderate vulnerabilities detected, review recommended."
@@ -58,10 +58,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner && github.repository_owner.toLowerCase() }}/solaire:latest
-          file: ./Dockerfile
+          tags: ghcr.io/akramdjs/solaire:latest # lowercase username
 
-      - name: Scan Docker image for vulnerabilities
+      - name: Optional Scan image for vulnerabilities
         run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/solaire:latest
-          docker run --rm aquasec/trivy image ghcr.io/${{ github.repository_owner }}/solaire:latest
+          docker pull ghcr.io/akramdjs/solaire:latest
+          docker run --rm aquasec/trivy image ghcr.io/akramdjs/solaire:latest
