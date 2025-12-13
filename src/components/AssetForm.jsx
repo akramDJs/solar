@@ -27,23 +27,24 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
   useEffect(() => {
     if (asset) {
       setFormData({
-        name: asset.name,
-        capacity: String(asset.capacity),
-        location: asset.location,
-        status: asset.status,
-        installDate: asset.installDate,
-        efficiency: String(asset.efficiency),
-        lastMaintenance: asset.lastMaintenance,
+        name: asset.name ?? '',
+        capacity: asset.capacity != null ? String(asset.capacity) : '',
+        location: asset.location ?? '',
+        status: asset.status ?? 'active',
+        installDate: asset.installDate ?? '',
+        efficiency: asset.efficiency != null ? String(asset.efficiency) : '',
+        lastMaintenance: asset.lastMaintenance ?? '',
       });
     } else {
+      const today = new Date().toISOString().split('T')[0];
       setFormData({
         name: '',
         capacity: '',
         location: '',
         status: 'active',
-        installDate: new Date().toISOString().split('T')[0],
+        installDate: today,
         efficiency: '',
-        lastMaintenance: new Date().toISOString().split('T')[0],
+        lastMaintenance: today,
       });
     }
     setErrors({});
@@ -65,7 +66,7 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
     }
 
     if (
-      !formData.efficiency ||
+      formData.efficiency === '' ||
       Number(formData.efficiency) < 0 ||
       Number(formData.efficiency) > 100
     ) {
@@ -103,7 +104,6 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: '' }));
     }
@@ -125,6 +125,7 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
               disabled={loading}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -137,6 +138,7 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
               disabled={loading}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -148,6 +150,7 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
               disabled={loading}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -162,6 +165,7 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
               <MenuItem value="maintenance">Maintenance</MenuItem>
             </TextField>
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -175,6 +179,7 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -187,6 +192,7 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
               disabled={loading}
             />
           </Grid>
+
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -202,10 +208,12 @@ export default function AssetForm({ open, asset, loading, onSubmit, onCancel }) 
           </Grid>
         </Grid>
       </DialogContent>
+
       <DialogActions>
         <Button onClick={onCancel} disabled={loading}>
           Cancel
         </Button>
+
         <Button
           onClick={handleSubmit}
           variant="contained"

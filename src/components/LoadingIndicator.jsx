@@ -1,5 +1,4 @@
-//import React from 'react';
-import { Box,CircularProgress, Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 export default function LoadingIndicator({ message = 'Loading...' }) {
   return (
@@ -12,7 +11,7 @@ export default function LoadingIndicator({ message = 'Loading...' }) {
       gap={2}
     >
       <CircularProgress size={60} />
-      <Typography variant="h6" color="textSecondary">
+      <Typography variant="h6" color="text.secondary">
         {message}
       </Typography>
     </Box>
