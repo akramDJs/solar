@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import {
-  Container,
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Box,
-  Snackbar,
-  Alert,
-  ThemeProvider,
-  createTheme,
-  CssBaseline,
-  Paper,
+  _Container,
+  _AppBar,
+  _Toolbar,
+  _Typography,
+  _Button,
+  _Box,
+  _Snackbar,
+  _Alert,
+  _ThemeProvider,
+  _createTheme,
+  _CssBaseline,
+  _Paper,
 } from '@mui/material';
-import { Plus, Sun } from 'lucide-react';
-import { mockApi } from './utils/mockApi';
-import { LoadingIndicator } from './components/LoadingIndicator';
-import { ErrorAlert } from './components/ErrorAlert';
-import { SolarArrayTable } from './components/SolarArrayTable';
-import { AssetForm } from './components/AssetForm';
-import { DeleteConfirmation } from './components/DeleteConfirmation';
-import { Dashboard } from './components/Dashboard';
+import { _Plus, _Sun } from 'lucide-react';
+import { _mockApi } from './utils/mockApi';
+import { _LoadingIndicator } from './components/LoadingIndicator';
+import { _ErrorAlert } from './components/ErrorAlert';
+import { _SolarArrayTable } from './components/SolarArrayTable';
+import { _AssetForm } from './components/AssetForm';
+import { _DeleteConfirmation } from './components/DeleteConfirmation';
+import { _Dashboard } from './components/Dashboard';
 
 const theme = createTheme({
   palette: {

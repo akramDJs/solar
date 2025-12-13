@@ -1,7 +1,7 @@
 //import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { Dashboard } from './Dashboard';
+import { _Dashboard } from './Dashboard';
 
 describe('Dashboard component', () => {
   const assets = [

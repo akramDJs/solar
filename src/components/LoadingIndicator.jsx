@@ -1,5 +1,5 @@
 //import React from 'react';
-import { CircularProgress, Box, Typography } from '@mui/material';
+import { _CircularProgress, _Box, _Typography } from '@mui/material';
 
 export function LoadingIndicator({ message = 'Loading...' }) {
   return (

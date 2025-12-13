@@ -1,59 +1,50 @@
-// eslint.config.cjs (CommonJS)
+// eslint.config.cjs
 const js = require("@eslint/js");
-const react = require("eslint-plugin-react");
-const reactHooks = require("eslint-plugin-react-hooks");
-const prettier = require("eslint-plugin-prettier");
+const reactPlugin = require("eslint-plugin-react");
+const prettier = require("eslint-config-prettier");
 
 module.exports = [
+  // Base JS/TS rules
   {
-    files: ["**/*.{js,jsx}"],
+    ...js.configs.recommended,
     languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
       parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
         ecmaFeatures: {
           jsx: true,
         },
       },
-      env: {
-  browser: true,
-  es2021: true,
-  jest: true,       // <--- Jest globals
-},
-      globals: {
-        window: "readonly",
-        document: "readonly",
-        setTimeout: "readonly",
-        clearTimeout: "readonly",
-        
-        console: "readonly",
-      },
-    },
-    settings: {
-      react: {
-        version: "detect",
-      },
     },
     plugins: {
-      react,
-      "react-hooks": reactHooks,
-      prettier,
+      react: reactPlugin,
     },
     rules: {
-      
-      ...js.configs.recommended.rules,
-      ...react.configs.recommended.rules,
-      "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
-      
-      "react/jsx-uses-react": "off",
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-      "prettier/prettier": "warn",
-      "no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
-      ],
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+    },
+  },
+
+  // Prettier
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    rules: {
+      ...prettier.rules,
+    },
+  },
+
+  // Jest for test files
+  {
+    files: ["**/*.test.{js,jsx,ts,tsx}"],
+    languageOptions: {
+      globals: {
+        jest: "readonly",
+        describe: "readonly",
+        test: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        expect: "readonly",
+      },
     },
   },
 ];

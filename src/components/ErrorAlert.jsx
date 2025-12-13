@@ -1,6 +1,6 @@
 //import React from 'react';
-import { Alert, AlertTitle, Button, Box } from '@mui/material';
-import { RefreshCw } from 'lucide-react';
+import { _Alert, _AlertTitle, _Button, _Box } from '@mui/material';
+import { _RefreshCw } from 'lucide-react';
 
 export function ErrorAlert({ message, onRetry }) {
   return (

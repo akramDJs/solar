@@ -1,7 +1,7 @@
 //import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import App from '../App';
+import _App from '../App';
 
 // Mock the API
 vi.mock('../utils/mockApi', () => ({

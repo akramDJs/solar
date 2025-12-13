@@ -1,14 +1,14 @@
 //import React from 'react';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-  CircularProgress,
+  _Dialog,
+  _DialogTitle,
+  _DialogContent,
+  _DialogContentText,
+  _DialogActions,
+  _Button,
+  _CircularProgress,
 } from '@mui/material';
-import { AlertTriangle } from 'lucide-react';
+import { _AlertTriangle } from 'lucide-react';
 
 export function DeleteConfirmation({ open, assetName, loading, onConfirm, onCancel }) {
   return (

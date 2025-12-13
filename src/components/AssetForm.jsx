@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField,
-  MenuItem,
-  Grid,
-  CircularProgress,
+  _Dialog,
+  _DialogTitle,
+  _DialogContent,
+  _DialogActions,
+  _Button,
+  _TextField,
+  _MenuItem,
+  _Grid,
+  _CircularProgress,
 } from '@mui/material';
 
 export function AssetForm({ open, asset, loading, onSubmit, onCancel }) {

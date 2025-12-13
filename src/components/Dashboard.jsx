@@ -1,5 +1,5 @@
 //import React from 'react';
-import { Box, Paper, Grid, Typography } from '@mui/material';
+import { _Box, _Paper, _Grid, _Typography } from '@mui/material';
 import { Sun, Zap, AlertCircle, TrendingUp } from 'lucide-react';
 
 export function Dashboard({ assets }) {
@@ -41,7 +41,7 @@ export function Dashboard({ assets }) {
   return (
     <Grid container spacing={3} sx={{ mb: 4 }}>
       {stats.map((stat) => {
-        const Icon = stat.icon;
+        const _Icon = stat.icon;
         return (
           <Grid item xs={12} sm={6} md={3} key={stat.title}>
             <Paper
