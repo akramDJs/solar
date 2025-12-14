@@ -34,10 +34,10 @@ jobs:
       - name: Run tests
         run: npm run test -- --coverage
 
-      - name:Install Trivy
-        sudo apt-get update
-        sudo apt-get install -y curl
-        curl -sfl https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
+      - name: Install Trivy
+          sudo apt-get update
+          sudo apt-get install -y curl
+          curl -sfl https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 
       # 6. Docker: setup QEMU and Buildx
       - name: Set up QEMU
