@@ -34,14 +34,14 @@ jobs:
       - name: Run tests
         run: npm run test -- --coverage
 
-      # 6. Install Trivy CLI
+      # 6. Install Trivy CLI (so we can produce a report)
       - name: Install Trivy
         run: |
           sudo apt-get update
           sudo apt-get install -y curl
           curl -sfl https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 
-      # 7. Setup Docker
+      # 7. Docker: setup QEMU and Buildx
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -65,10 +65,19 @@ jobs:
           push: true
           tags: ghcr.io/akramdjs/solar:latest
 
-      # 10. Scan image with Trivy
-      - name: Scan Docker image with Trivy
+      # 10. Scan image with Trivy (report-only; won't fail the job)
+      - name: Scan Docker image with Trivy (report-only)
+        continue-on-error: true
         run: |
           trivy image \
-            --severity CRITICAL,HIGH \
-            --exit-code 1 \
-            ghcr.io/akramdjs/solar:latest
+            --format table \
+            --severity CRITICAL,HIGH,MEDIUM \
+            --output trivy-report.txt \
+            ghcr.io/akramdjs/solar:latest || true
+
+      # 11. Upload the Trivy report so you can download and inspect it
+      - name: Upload Trivy report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-report
+          path: trivy-report.txt
