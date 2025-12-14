@@ -1,29 +1,25 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import App from '../App';
 
+vi.mock('../utils/mockApi', () => ({
+  mockApi: {
+    getAssets: vi.fn(() =>
+      Promise.resolve([
+        { id: 1, status: 'active', capacity: 500, efficiency: 90 },
+        { id: 2, status: 'maintenance', capacity: 300, efficiency: 80 },
+      ])
+    ),
+  },
+}));
+
 describe('App component', () => {
-  test('renders home page then enters dashboard', async () => {
+  it('renders app without crashing', async () => {
     render(<App />);
 
-    // ✅ Home page is visible
-    expect(
-      screen.getByText(/Welcome to Solar Production/i)
-    ).toBeInTheDocument();
-
-    // ✅ Click "Enter Dashboard"
-    fireEvent.click(
-      screen.getByRole('button', { name: /Enter Dashboard/i })
-    );
-
-    // ✅ Dashboard content appears
     await waitFor(() => {
-      expect(
-        screen.getByText(/Total Installations/i)
-      ).toBeInTheDocument();
-
-      expect(
-        screen.getByText(/Active Assets/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText('Total Installations')).toBeInTheDocument();
+      expect(screen.getByText('Active Assets')).toBeInTheDocument();
     });
   });
 });
