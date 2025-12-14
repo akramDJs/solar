@@ -67,7 +67,7 @@
             "eslint-plugin-react-hooks": "^7.0.1",
             "jsdom": "^27.3.0",
             "prettier": "^3.7.4",
-            "vite": "6.3.5",
+            "vite": "^6.4.1",
             "vitest": "^4.0.15"
       },
       "scripts": {
@@ -76,8 +76,8 @@
             "lint": "eslint src",
             "lint:fix": "eslint src --fix",
             "lint:ci": "eslint src --max-warnings=0",
-             "test": "vitest",
-    "test:coverage": "vitest run --coverage",
+            "test": "vitest",
+            "test:coverage": "vitest run --coverage",
             "format": "prettier --write src"
       }
 }
