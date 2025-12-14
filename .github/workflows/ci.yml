@@ -95,5 +95,5 @@ jobs:
       # 14. Deploy to Railway
       - name: Deploy to Railway
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up --service solar -- --yes
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service solar
